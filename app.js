@@ -5,32 +5,21 @@ const app = express();
 // Add middleware to modify the request -> Add values to request.body
 app.use(express.json());
 
-// app.get('/', (request, response) => {
-//   response.status(200).json({
-//     message: 'Hello from the server side!',
-//     app: 'Natours',
-//   });
-// });
-
-// app.post('/', (request, response) => {
-//   response.status(200).send('You can post to this endpoint!');
-// });
-
 // Route handler => Callback
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-app.get('/api/v1/tours', (request, response) => {
+const listTours = (request, response) => {
   response.status(200).json({
     status: 'success',
     results: tours.length,
     data: { tours },
   });
-});
+};
 
-app.get('/api/v1/tours/:id', (request, response) => {
+const showTour = (request, response) => {
   const id = request.params.id * 1;
   const tour = tours.find((tour) => tour.id === id);
 
@@ -45,9 +34,9 @@ app.get('/api/v1/tours/:id', (request, response) => {
     status: 'success',
     data: { tour },
   });
-});
+};
 
-app.post('/api/v1/tours', (request, response) => {
+const createTour = (request, response) => {
   // console.log(request.body);
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, request.body);
@@ -67,11 +56,9 @@ app.post('/api/v1/tours', (request, response) => {
       });
     }
   );
-});
+};
 
-// PUT -> Entire object
-// PATCH -> Update specific properties
-app.patch('/api/v1/tours/:id', (request, response) => {
+const updateTour = (request, response) => {
   if (Number(request.params.id) > tours.length) {
     return response.status(400).json({
       status: 'fail',
@@ -84,9 +71,9 @@ app.patch('/api/v1/tours/:id', (request, response) => {
       tour: '<Updated tour here...>',
     },
   });
-});
+};
 
-app.delete('/api/v1/tours/:id', (request, response) => {
+const deleteTour = (request, response) => {
   if (Number(request.params.id) > tours.length) {
     return response.status(400).json({
       status: 'fail',
@@ -98,7 +85,25 @@ app.delete('/api/v1/tours/:id', (request, response) => {
     status: 'success',
     data: null,
   });
-});
+};
+
+// Routes
+// PUT -> Entire object
+// PATCH -> Update specific properties
+
+// app.get('/api/v1/tours', listTours);
+// app.get('/api/v1/tours/:id', showTour);
+// app.post('/api/v1/tours', createTour);
+// app.patch('/api/v1/tours/:id', updateTour);
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(listTours).post(createTour);
+
+app
+  .route('/api/v1/tours/:id')
+  .get(showTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 const port = 3000;
 app.listen(port, () => {
