@@ -5,6 +5,17 @@ const app = express();
 // Add middleware to modify the request -> Add values to request.body
 app.use(express.json());
 
+app.use((request, response, next) => {
+  console.log('Hello from the middleware');
+  // Never forget to use next in middleware!
+  next();
+});
+
+app.use((request, response, next) => {
+  request.requestTime = new Date().toISOString();
+  next();
+});
+
 // Route handler => Callback
 
 const tours = JSON.parse(
@@ -12,8 +23,10 @@ const tours = JSON.parse(
 );
 
 const listTours = (request, response) => {
+  console.log(request.requestTime);
   response.status(200).json({
     status: 'success',
+    requestedAt: request.requestTime,
     results: tours.length,
     data: { tours },
   });
