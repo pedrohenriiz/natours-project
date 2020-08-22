@@ -107,6 +107,37 @@ const deleteTour = (request, response) => {
   });
 };
 
+const listUsers = (request, response) => {
+  response.status(500).json({
+    message: 'Route not defined yet!',
+    status: 'error',
+  });
+};
+const createUser = (request, response) => {
+  response.status(500).json({
+    message: 'Route not defined yet!',
+    status: 'error',
+  });
+};
+const showUser = (request, response) => {
+  response.status(500).json({
+    message: 'Route not defined yet!',
+    status: 'error',
+  });
+};
+const updateUser = (request, response) => {
+  response.status(500).json({
+    message: 'Route not defined yet!',
+    status: 'error',
+  });
+};
+const deleteUser = (request, response) => {
+  response.status(500).json({
+    message: 'Route not defined yet!',
+    status: 'error',
+  });
+};
+
 // Routes
 // PUT -> Entire object
 // PATCH -> Update specific properties
@@ -118,6 +149,14 @@ app
   .get(showTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+app.route('/api/v1/users').get(listUsers).post(createUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(showUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 // Server
 const port = 3000;
