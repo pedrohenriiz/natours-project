@@ -14,6 +14,16 @@ exports.checkId = (request, response, next, value) => {
   next();
 };
 
+exports.checkBody = (request, response, next) => {
+  if (!request.body.name || !request.body.price) {
+    return response.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price',
+    });
+  }
+  next();
+};
+
 exports.listTours = (request, response) => {
   console.log(request.requestTime);
   response.status(200).json({
