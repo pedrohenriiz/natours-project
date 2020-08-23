@@ -5,10 +5,10 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const app = express();
 
+// Middlewares
 // Add middleware to modify the request -> Add values to request.body
 app.use(express.json());
 
-// Middlewares
 app.use(morgan('dev'));
 
 app.use((request, response, next) => {
