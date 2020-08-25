@@ -8,7 +8,10 @@ const app = express();
 // Middlewares
 // Add middleware to modify the request -> Add values to request.body
 app.use(express.json());
-app.use(morgan('dev'));
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.static(`${__dirname}/public`));
 
