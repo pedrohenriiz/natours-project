@@ -8,8 +8,9 @@ const app = express();
 // Middlewares
 // Add middleware to modify the request -> Add values to request.body
 app.use(express.json());
-
 app.use(morgan('dev'));
+
+app.use(express.static(`${__dirname}/public`));
 
 app.use((request, response, next) => {
   console.log('Hello from the middleware');
