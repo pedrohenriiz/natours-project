@@ -36,7 +36,7 @@ exports.listTours = (request, response) => {
 
 exports.showTour = (request, response) => {
   const id = request.params.id * 1;
-  const tour = tours.find((tour) => tour.id === id);
+  const tour = tours.find((tourItem) => tourItem.id === id);
 
   response.status(200).json({
     status: 'success',
@@ -47,7 +47,7 @@ exports.showTour = (request, response) => {
 exports.createTour = (request, response) => {
   // console.log(request.body);
   const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, request.body);
+  const newTour = { id: newId, ...request.body };
 
   tours.push(newTour);
 
